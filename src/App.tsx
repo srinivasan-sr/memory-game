@@ -3,6 +3,9 @@ import { Paper } from "@mui/material";
 import {styled} from "@mui/material";
 import MemoryCard from "./components/MemoryCard";
 import Form from "./components/Form";
+import axios from "axios";
+import { CATEGORIES } from "./constants/categories";
+import { EMOJIS_BASE_URL } from "./constants/apis";
 
 const MemoryPaperOutline = styled(Paper)(({theme}) => ({
   width: '60%',
@@ -18,10 +21,26 @@ const MemoryPaperOutline = styled(Paper)(({theme}) => ({
 
 export default function App(){
   const [isGameOn, setIsGameOn] = useState(false);
+  const [emojisData, setEmojisData] = useState([]);
 
-  function startGame(event: React.FormEvent){
+  async function startGame(event: React.FormEvent){
     event.preventDefault();
-    setIsGameOn(true);  
+    try{
+      const response = await axios.get(`${EMOJIS_BASE_URL}${CATEGORIES[1].id}`);
+      if(response.status !== 200){
+        throw new Error("Unable to fetch data");
+      }
+     
+        const data = response.data as [];
+        const dataSample = data.slice(0,5);
+        setEmojisData(dataSample);
+        setIsGameOn(true);  
+        
+      
+    }catch(err){
+      console.error(err);
+    }
+    
   }
 
   function turnCard(){
@@ -30,9 +49,9 @@ export default function App(){
 
   return(
     <MemoryPaperOutline elevation={6}>
-      <h1>Memory</h1>
+      <h1>Memory Card</h1>
       {!isGameOn && <Form handleSubmit={startGame} />}
-      {isGameOn && <MemoryCard handleClick={turnCard} />}
+      {isGameOn && <MemoryCard handleClick={turnCard} data={emojisData} />}
     </MemoryPaperOutline>
   )
 }

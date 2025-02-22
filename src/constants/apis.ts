@@ -1,0 +1,1 @@
+export const EMOJIS_BASE_URL = 'https://emojihub.yurace.pro/api/all/category/'
