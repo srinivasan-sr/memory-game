@@ -32,3 +32,9 @@ export const CATEGORIES = [
         text: 'Flags'
     }
 ]
+
+export const DIFFICULTY_LEVEL_INDEX = {
+    'EASY': 6,
+    'MEDIUM': 12,
+    'HARD': 24
+}

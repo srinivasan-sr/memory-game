@@ -1,15 +1,9 @@
 import { Button, Grid2 } from "@mui/material";
-import {parseStringToHtml} from '../../utils/htmlUtilities';
-type EmojiItemProps = {
-        "name": string,
-        "category"?: string,
-        "group"?: string,
-        "htmlCode": string[],
-        "unicode"?: []
-};
+import {parseStringToHtml} from '../../utils/appUtils';
+import {EmojiItemProps} from '../../types/emoji-types';
 
 type MemoryCardProps = {
-    handleClick: (event : React.MouseEvent<HTMLButtonElement, MouseEvent>) => void,
+    handleClick: (index: number, name: string) => void,
     data: EmojiItemProps[],
 };
 
@@ -18,7 +12,7 @@ export default function MemoryCard({handleClick, data}:MemoryCardProps){
     const emojiButtonElements = data.map((emoji, index) => 
         <Grid2 size={2} key={index} aria-label="Emoji button grid">
         <Button key={index} variant="outlined" 
-        onClick={handleClick} size="large" aria-label="Emoji element button"
+        onClick={() => handleClick(index,emoji.name)} size="large" aria-label="Emoji element button"
         sx={{fontSize: '2rem'}}
         >
             {parseStringToHtml(emoji.htmlCode[0].toString())}
